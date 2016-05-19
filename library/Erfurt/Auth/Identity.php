@@ -14,6 +14,7 @@
  * @package Erfurt_Auth
  * @author Philipp Frischmuth <pfrischmuth@googlemail.com>
  */
+
 class Erfurt_Auth_Identity
 {
     protected $_uri = null;

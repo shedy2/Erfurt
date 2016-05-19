@@ -858,13 +858,16 @@ class Erfurt_Sparql_Query2_isBlank extends Erfurt_Sparql_Query2_ElementHelper im
 class Erfurt_Sparql_Query2_bound extends Erfurt_Sparql_Query2_ElementHelper implements Erfurt_Sparql_Query2_BuiltInCall
 {
     protected $element;
+    protected $negate;
 
     /**
      *
      * @param Erfurt_Sparql_Query2_Var $element
+     * @param boolean $negate - чтобы было !BOUND
      */
-    public function __construct(Erfurt_Sparql_Query2_Var $element) {
+    public function __construct(Erfurt_Sparql_Query2_Var $element, $negate = false) {
         $this->element = $element;
+        $this->negate = $negate;
         parent::__construct();
     }
 
@@ -873,7 +876,7 @@ class Erfurt_Sparql_Query2_bound extends Erfurt_Sparql_Query2_ElementHelper impl
      * @return string
      */
     public function getSparql() {
-        return 'BOUND('.$this->element->getSparql().')';
+        return ($this->negate ? '!' : '').'BOUND('.$this->element->getSparql().')';
     }
 }
 

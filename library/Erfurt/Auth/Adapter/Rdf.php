@@ -84,7 +84,8 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
         } else {
             // normal user from system ontology
             $identity = array(
-                'username'  => $this->_username, 
+                'username'  => $this->_username,
+                'lang' => 'en',
                 'uri'       => '', 
                 'dbuser'    => false, 
                 'anonymous' => false
@@ -121,8 +122,8 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
                 } else {
                     $identity['uri'] = $this->_users[$this->_username]['userUri'];
                     $identity['email'] = $this->_users[$this->_username]['userEmail'];
-                    
-                    
+                    $identity['lang'] = $this->_users[$this->_username]['userLang'];
+
                     $identityObject = new Erfurt_Auth_Identity($identity);
                     
                     $authResult = new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $identityObject);
@@ -150,7 +151,8 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
             'userUri'       => false,
             'denyLogin'     => false,
             'userPassword'  => '',
-            'userEmail'     => ''
+            'userEmail'     => '',
+            'userLang'     => ''
         );
         
         $uris = $this->_getUris();
@@ -184,6 +186,9 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
                         break;
                     case $uris['user_mail']:
                         $returnVal['userEmail'] = $userStatement['object'];
+                        break;
+                    case $uris['user_lang']:
+                        $returnVal['userLang'] = $userStatement['object'];
                         break;
                     default:
                         // ignore other statements
@@ -408,7 +413,8 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
             $config = $this->_getConfig();
             
             $this->_uris = array(
-                'user_class'      => $config->ac->user->class, 
+                'user_class'      => $config->ac->user->class,
+                'user_lang' => $config->ac->user->lang,
                 'user_username'   => $config->ac->user->name, 
                 'user_password'   => $config->ac->user->pass, 
                 'user_mail'       => $config->ac->user->mail, 

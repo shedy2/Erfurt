@@ -1,5 +1,6 @@
 <?php
 	CharStreamConst::$EOF = -1;
+require_once "util.php";
 
 	class ANTLRStringStream implements CharStream {
 
