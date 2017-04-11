@@ -849,6 +849,16 @@ class Erfurt_Sparql_Query2 //extends Erfurt_Sparql_Query2_ContainerHelper
         return $this->projectionVars;
     }
 
+    public function hasProjectionVar($varName) {
+        foreach($this->getProjectionVars() as $pvar) {
+            if ($pvar->getName() == $varName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function hasProjectionVars(){
         return count($this->projectionVars) > 0;
     }
@@ -949,7 +959,7 @@ class Erfurt_Sparql_Query2 //extends Erfurt_Sparql_Query2_ContainerHelper
 
     /**
      * invoke parser
-     * @param type $queryString
+     * @param string $queryString
      * @param type $parsePartial
      * @return \Exception
      * @throws Exception

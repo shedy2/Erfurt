@@ -81,8 +81,13 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
         
         
         //build sparql-string
-        $sparql = "{ \n";
+        $sparql = "";
+
         for ($i=0; $i < $countElements; ++$i) {
+            if ($this->elements[$i] instanceof Core_Query2_Bind) {
+                continue;
+            }
+
             $sparql .= $this->elements[$i]->getSparql();
 
             //realisation of TriplesBlock
@@ -93,9 +98,14 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
             } 
             $sparql .= " \n";
         }
-        
-        
-        return $sparql."} \n";
+
+        for ($i=0; $i < $countElements; ++$i) {
+            if ($this->elements[$i] instanceof Core_Query2_Bind) {
+                $sparql .= $this->elements[$i]->getSparql()." \n";
+            }
+        }
+
+        return $sparql." \n";
     }
     
     public function __toString() {    
@@ -189,7 +199,7 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
     public function addElements($elements) {
         if (!is_array($elements)) {
             throw new RuntimeException('Argument 1 passed to '.
-                'Erfurt_Sparql_Query2_GroupGraphPattern::setElements : '.
+                'Erfurt_Sparql_Query2_GroupGraphPattern::addElements : '.
                 'must be an array');
         }
         
@@ -198,7 +208,7 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
                 && !($element instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject)
                 && !($element instanceof Erfurt_Sparql_Query2_Filter)) {
                     throw new RuntimeException('Argument 1 passed to '.
-                        'Erfurt_Sparql_Query2_GroupGraphPattern::setElements : '.
+                        'Erfurt_Sparql_Query2_GroupGraphPattern::addElements : '.
                         'must be an array of instances of '.
                         'Erfurt_Sparql_Query2_GroupGraphPattern or '.
                         'Erfurt_Sparql_Query2_IF_TriplesSameSubject or '.

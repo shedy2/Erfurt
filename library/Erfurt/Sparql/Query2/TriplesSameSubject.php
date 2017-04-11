@@ -119,6 +119,9 @@ class Erfurt_Sparql_Query2_TriplesSameSubject extends Erfurt_Sparql_Query2_Eleme
      * @return int
      */
     public static function compareWeight($c1, $c2){
+        $c1weight = 0;
+        $c2weight = 0;
+
         switch(true){
             case $c1 instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject:
                 $c1weight = 1;

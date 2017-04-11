@@ -27,7 +27,7 @@ class Erfurt_Sparql_Query2_OptionalGraphPattern extends Erfurt_Sparql_Query2_Gro
      * @return string
      */
      public function getSparql() {
-        return 'OPTIONAL '.substr(parent::getSparql(),0,-1); //substr is cosmetic for stripping off the last linebreak 
+        return 'OPTIONAL { '.substr(parent::getSparql(),0,-1) . ' }'; //substr is cosmetic for stripping off the last linebreak
     }
 }
 ?>
