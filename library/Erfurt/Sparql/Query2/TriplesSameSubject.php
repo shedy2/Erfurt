@@ -68,7 +68,20 @@ class Erfurt_Sparql_Query2_TriplesSameSubject extends Erfurt_Sparql_Query2_Eleme
     public function getPropList() {
         return $this->propertyList;
     }
-    
+
+
+    public function getObject() {
+        return $this->propertyList->getProperties()[0]['objList']->getElements()[0];
+    }
+
+    public function getPredicate() {
+        return $this->propertyList->getProperties()[0]['verb'];
+    }
+
+    public function hasOnlyVars() {
+        return $this->getPredicate() instanceof Erfurt_Sparql_Query2_Var &&
+        $this->getObject() instanceof Erfurt_Sparql_Query2_Var;
+    }
     /**
      * getSubject
      * @return Erfurt_Sparql_Query2_VarOrTerm the subject

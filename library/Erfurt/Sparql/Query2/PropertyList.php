@@ -54,6 +54,10 @@ class Erfurt_Sparql_Query2_PropertyList {
         return (count($this->properties) == 0);
     }
 
+    public function getProperties() {
+        return $this->properties;
+    }
+
     public function getVars(){
         $ret = array();
         
