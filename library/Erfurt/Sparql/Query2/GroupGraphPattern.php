@@ -27,7 +27,8 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
      */
     public function addElement($member) {
         if (!($member instanceof Erfurt_Sparql_Query2_GroupGraphPattern) 
-            && !($member instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject) 
+            && !($member instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject)
+            && !($member instanceof Erfurt_Sparql_Query2_ElementHelper)
             && !($member instanceof Erfurt_Sparql_Query2_Filter)) {
                 throw new RuntimeException('Argument 1 passed to Erfurt_Sparql_Query2_GroupGraphPattern::addElement must be an instance of Erfurt_Sparql_Query2_GroupGraphPattern or Erfurt_Sparql_Query2_Triple or Erfurt_Sparql_Query2_Filter, instance of '.typeHelper($member).' given');
                 return;
@@ -139,6 +140,7 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
     public function setElement($i, $member) {
         if (!($member instanceof Erfurt_Sparql_Query2_GroupGraphPattern)
             && !($member instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject)
+            && !($member instanceof Erfurt_Sparql_Query2_ElementHelper)
             && !($member instanceof Erfurt_Sparql_Query2_Filter)) {
                 throw new RuntimeException(
                     'Argument 2 passed to Erfurt_Sparql_Query2_GroupGraphPattern'.
@@ -174,6 +176,7 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
         foreach ($elements as $element) {
             if (!($element instanceof Erfurt_Sparql_Query2_GroupGraphPattern) 
                 && !($element instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject)
+                && !($element instanceof Erfurt_Sparql_Query2_ElementHelper)
                 && !($element instanceof Erfurt_Sparql_Query2_Filter)) {
                     throw new RuntimeException('Argument 1 passed to '.
                         'Erfurt_Sparql_Query2_GroupGraphPattern::setElements : '.
@@ -206,6 +209,7 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
         foreach ($elements as $element) {
             if (!($element instanceof Erfurt_Sparql_Query2_GroupGraphPattern) 
                 && !($element instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject)
+                && !($element instanceof Erfurt_Sparql_Query2_ElementHelper)
                 && !($element instanceof Erfurt_Sparql_Query2_Filter)) {
                     throw new RuntimeException('Argument 1 passed to '.
                         'Erfurt_Sparql_Query2_GroupGraphPattern::addElements : '.
