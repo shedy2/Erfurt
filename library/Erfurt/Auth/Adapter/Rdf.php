@@ -119,11 +119,6 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
                 } else {
                     $identity['uri'] = $this->_users[$this->_username]['userUri'];
                     $identity['email'] = $this->_users[$this->_username]['userEmail'];
-<<<<<<< HEAD
-                    $identity['lang'] = $this->_users[$this->_username]['userLang'];
-
-=======
->>>>>>> upstream/develop
                     $identityObject = new Erfurt_Auth_Identity($identity);
 
                     $authResult = new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $identityObject);
@@ -405,22 +400,12 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
 
             $this->_uris = array(
                 'user_class'      => $config->ac->user->class,
-<<<<<<< HEAD
-                'user_lang' => $config->ac->user->lang,
-                'user_username'   => $config->ac->user->name, 
-                'user_password'   => $config->ac->user->pass, 
-                'user_mail'       => $config->ac->user->mail, 
-                'user_superadmin' => $config->ac->user->superAdmin, 
-                'user_anonymous'  => $config->ac->user->anonymousUser, 
-                'action_deny'     => $config->ac->action->deny, 
-=======
                 'user_username'   => $config->ac->user->name,
                 'user_password'   => $config->ac->user->pass,
                 'user_mail'       => $config->ac->user->mail,
                 'user_superadmin' => $config->ac->user->superAdmin,
                 'user_anonymous'  => $config->ac->user->anonymousUser,
                 'action_deny'     => $config->ac->action->deny,
->>>>>>> upstream/develop
                 'action_login'    => $config->ac->action->login
             );
         }

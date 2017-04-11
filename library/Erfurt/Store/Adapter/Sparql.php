@@ -112,7 +112,7 @@ class Erfurt_Store_Adapter_Sparql implements Erfurt_Store_Adapter_Interface
     public function getModel($graphUri)
     {
         if (isset($this->_configuredGraphs[$graphUri])) {
-            $m = new Erfurt_Owl_Model($graphUri, null);
+            $m = new CRM2_Erfurt_Owl_Model($graphUri, null);
 
             return $m;
         } else {

@@ -1097,7 +1097,7 @@ EOF;
 
             switch ($modelType) {
                 case self::MODEL_TYPE_OWL :
-                    $modelInstance = new Erfurt_Owl_Model($modelIri);
+                    $modelInstance = new CRM2_Erfurt_Owl_Model($modelIri);
                     break;
                 case self::MODEL_TYPE_RDFS :
                     $modelInstance = new Erfurt_Rdfs_Model($modelIri);
