@@ -2,10 +2,9 @@
 /**
  * This file is part of the {@link http://erfurt-framework.org Erfurt} project.
  *
- * @copyright Copyright (c) 2013, {@link http://aksw.org AKSW}
- * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ * @copyright Copyright (c) 2012-2016, {@link http://aksw.org AKSW}
+ * @license   http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
-
 
 
 /**
@@ -247,7 +246,7 @@ class Erfurt_Rdf_Resource extends Erfurt_Rdf_Node
     protected function _fetchDescription($maxDepth)
     {
         $query = new Erfurt_Sparql_SimpleQuery();
-        $query->setProloguePart('SELECT ?p ?o')
+        $query->setSelectClause('SELECT ?p ?o')
               ->setWherePart(sprintf('{<%s> ?p ?o . }', $this->getIri()));
         $description = array();
         $result = null ;

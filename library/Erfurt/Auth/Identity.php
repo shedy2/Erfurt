@@ -2,8 +2,8 @@
 /**
  * This file is part of the {@link http://erfurt-framework.org Erfurt} project.
  *
- * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
- * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ * @copyright Copyright (c) 2012-2016, {@link http://aksw.org AKSW}
+ * @license   http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
 /**
@@ -129,7 +129,6 @@ class Erfurt_Auth_Identity
     {
         // Non-OpenID users are not allowed to change their username!
         if (!($this->isOpenId() || $this->isWebId())) {
-            
             throw new Erfurt_Auth_Identity_Exception('Username change is not allowed!');
         }
         
@@ -152,7 +151,6 @@ class Erfurt_Auth_Identity
                                                              || ($newUsername === 'Anonymous')
                                                              || ($newUsername === 'Admin')
                                                              || ($newUsername === 'SuperAdmin')) {
-                
                 throw new Erfurt_Auth_Identity_Exception('Username already registered.');
             } else {
                 // Set the new username.
@@ -212,7 +210,6 @@ class Erfurt_Auth_Identity
             
             if ($newEmail === '') {
                 // This case is not allowed, for every user needs a valid email address.
-                
                 throw new Erfurt_Auth_Identity_Exception('Email must not be empty.');
             }
             
@@ -225,16 +222,13 @@ class Erfurt_Auth_Identity
                 }
             }
                     
-            
             $emailValidator = new Zend_Validate_EmailAddress();
             $actionConfig = $app->getActionConfig('RegisterNewUser');
             
             if (in_array($newEmailWithMailto, $registeredEmailAddresses)) {
-                
                 throw new Erfurt_Auth_Identity_Exception('Email address is already registered.');
             } else if (isset($actionConfig['mailvalidation']) && $actionConfig['mailvalidation'] == 'yes' 
                                                               && !$emailValidator->isValid($newEmail)) {
-                
                 
                 throw new Erfurt_Auth_Identity_Exception('Email address validation failed.');
             } else {
@@ -281,12 +275,10 @@ class Erfurt_Auth_Identity
         
         if ($username !== '') {
             if (strlen($newPassword) < 5) {
-                
                 throw new Erfurt_Auth_Identity_Exception('Password needs at least 5 characters.');
             } else if (isset($actionConfig['passregexp']) && $actionConfig['passregexp'] != '' 
                                                           && !@preg_match($actionConfig['passregexp'], $newPassword)) {
             
-                
                 throw new Erfurt_Auth_Identity_Exception('Password does not match regular expression set in system configuration');
             } else {
                 // Set new password.
@@ -315,7 +307,6 @@ class Erfurt_Auth_Identity
             }
         } else {
             // If we have no username, we need no password.
-            
             throw new Erfurt_Auth_Identity_Exception('Passwords are only allowed if a Username is set.');
         }
         

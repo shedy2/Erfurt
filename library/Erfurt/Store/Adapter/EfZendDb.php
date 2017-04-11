@@ -2,12 +2,9 @@
 /**
  * This file is part of the {@link http://erfurt-framework.org Erfurt} project.
  *
- * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
- * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ * @copyright Copyright (c) 2012-2016, {@link http://aksw.org AKSW}
+ * @license   http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
-
-
-
 
 
 /**
@@ -51,9 +48,9 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
     public function __construct($adapterOptions = array())
     {
         $adapterOptions = array_merge(array('host' =>  'localhost', 'profiler'  => false), $adapterOptions);
-        
+
         $this->_adapterOptions = $adapterOptions;
-        
+
         $this->_connect();
 
         // we want indexed results
@@ -65,32 +62,26 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
             $this->_titleProperties = $config->properties->title->toArray();
         }
     }
-    
+
     protected function _connect(){
         switch (strtolower($this->_adapterOptions['dbtype'])) {
             case 'mysql':
                 if (extension_loaded('mysqli')) {
-                    
                     $this->_dbConn = new Zend_Db_Adapter_Mysqli($this->_adapterOptions);
                 } else if (extension_loaded('pdo') && extension_loaded('pdo_mysql')) {
-                    
                     $this->_dbConn = new Zend_Db_Adapter_Pdo_Mysql($this->_adapterOptions);
                 } else {
-                    
                     throw new Erfurt_Exception('Neither "mysqli" nor "pdo_mysql" extension found.', -1);
                 }
                 break;
             case 'sqlsrv':
                 if (extension_loaded('sqlsrv')) {
-                    
                     $this->_dbConn = new Zend_Db_Adapter_Sqlsrv($this->_adapterOptions);
                 } else {
-                    
                     throw new Erfurt_Exception('Sqlsrv extension not found.', -1);
                 }
                 break;
             default:
-                
                 throw new Erfurt_Exception('Given database adapter is not supported.', -1);
         }
 
@@ -99,22 +90,20 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
             $this->_dbConn->getConnection();
         } catch (Zend_Db_Adapter_Exception $e) {
             // maybe wrong login credentials or db-server not running?!
-            
             throw new Erfurt_Exception(
-                'Could not connect to database with name: "' .  $this->_adapterOptions['dbname'] . 
+                'Could not connect to database with name: "' .  $this->_adapterOptions['dbname'] .
                 '". Please check your credentials and whether the database exists and the server is running.', -1
             );
 
         } catch (Zend_Exception $e) {
             // maybe a needed php extension is not loaded?!
-            
             throw new Erfurt_Exception('An error with the specified database adapter occured.', -1);
         }
 
         // we want indexed results
         //$this->_dbConn->setFetchMode(Zend_Db::FETCH_NUM);
     }
-    
+
     /**
      * save all but except the db connection
      * @return array keys to save
@@ -202,7 +191,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                             $sRef = $this->_insertValueInto('ef_uri', $graphId, $s, $subjectHash);
                         } catch (Erfurt_Store_Adapter_Exception $e) {
                             $this->_dbConn->rollback();
-                            
                             throw new Erfurt_Store_Adapter_Exception($e->getMessage());
                         }
 
@@ -217,7 +205,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                             $pRef = $this->_insertValueInto('ef_uri', $graphId, $p, $predicateHash);
                         } catch (Erfurt_Store_Adapter_Exception $e) {
                             $this->_dbConn->rollback();
-                            
                             throw new Erfurt_Store_Adapter_Exception($e->getMessage());
                         }
 
@@ -238,7 +225,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                             $oRef = $this->_insertValueInto($tableName, $graphId, $o['value'], $objectHash);
                         } catch (Erfurt_Store_Adapter_Exception $e) {
                             $this->_dbConn->rollback();
-                            
                             throw new Erfurt_Store_Adapter_Exception($e->getMessage());
                         }
 
@@ -248,7 +234,7 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                     $sValue = $this->_dbConn->quote($s);
                     $pValue = $this->_dbConn->quote($p);
                     $oValue = $this->_dbConn->quote($o['value']);
-                    
+
                     $sqlString .= "($graphId, $sValue, $pValue, $oValue,";
 
                     #$data = array(
@@ -288,7 +274,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                             $dtRef = $this->_insertValueInto('ef_uri', $graphId, $dType, $dTypeHash);
                         } catch (Erfurt_Store_Adapter_Exception $e) {
                             $this->_dbConn->rollback();
-                            
                             throw new Erfurt_Store_Adapter_Exception($e->getMessage());
                         }
 
@@ -312,7 +297,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                     #        continue;
                     #    } else {
                     #        $this->_dbConn->rollback();
-                    #        
                     #        throw new Erfurt_Store_Adapter_Exception('Bulk insertion of statements failed: ' .
                     #                        $this->_dbConn->getConnection()->error);
                     #    }
@@ -361,7 +345,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         try {
             $this->addMultipleStatements($graphUri, $statementArray);
         } catch (Erfurt_Store_Adapter_Exception $e) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Insertion of statement failed:' . $e->getMessage()
             );
@@ -374,14 +357,14 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $query = new Erfurt_Sparql_SimpleQuery();
         if (!$distinct) {
             // old way: distinct has no effect !!!
-            $query->setProloguePart("COUNT DISTINCT $countSpec"); 
+            $query->setSelectClause("COUNT DISTINCT $countSpec");
         } else {
             // i made a (uncool) hack to fix this, the "-" is there because i didnt want to change tokenization
-            $query->setProloguePart("COUNT-DISTINCT $countSpec"); 
+            $query->setSelectClause("COUNT-DISTINCT $countSpec"); 
         }
         $query->setFrom($graphIris)
               ->setWherePart($whereSpec);
-        
+
         $result = $this->sparqlQuery($query);
 
         if ($result) {
@@ -420,7 +403,7 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
             $uriHash = md5($uri);
 
             $uriData = array(
-                'g'     => $graphid,
+                'g'     => $graphId,
                 'v'     => $uri,
                 'vh'    => $uriHash);
 
@@ -438,7 +421,7 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
             $baseHash = md5($baseUri);
 
             $baseData = array(
-                'g'     => $graphid,
+                'g'     => $graphId,
                 'v'     => $baseUri,
                 'vh'    => $baseHash);
 
@@ -452,7 +435,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         }
 
         // invalidate the cache and fetch model infos again
-        
         $cache = Erfurt_App::getInstance()->getCache();
         $cache->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('model_info'));
         $this->_modelInfoCache = null;
@@ -504,7 +486,7 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         if (null !== $object) {
             if (isset($object['value'])) {
                 $escapedObject = $this->_dbConn->quote($object['value']);
-                
+
                 $whereString .= ' AND o = ' . $escapedObject . ' ';
             }
 
@@ -535,7 +517,7 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                 }
             }
         }
-        
+
         // remove the specified statements from the database
         $ret = $this->_dbConn->delete('ef_stmt', $whereString);
 
@@ -599,12 +581,12 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
 
                         $whereString .= 'AND s = \'' . $subject . '\' ';
                         $whereString .= 'AND p = \'' . $predicate . '\' ';
-                        
+
                         //escaping
                         $escapedObject = $this->_dbConn->quote($object); //also wraps the quotes around
-                        
+
                         $whereString .= 'AND o = ' . $escapedObject . ' ';
-                        
+
                         $this->_dbConn->delete('ef_stmt', $whereString);
                     }
                 }
@@ -617,7 +599,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         } catch (Exception $e) {
             // something went wrong... rollback
             $this->_dbConn->rollback();
-            
             throw new Erfurt_Store_Adapter_Exception('Bulk deletion of statements failed.'.$e->getMessage());
         }
     }
@@ -630,7 +611,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         if (isset($modelInfoCache[$graphUri]['modelId'])) {
             $graphId = $modelInfoCache[$graphUri]['modelId'];
         } else {
-            
             throw new Erfurt_Store_Adapter_Exception('Model deletion failed: No db id found for model URL.');
         }
 
@@ -653,7 +633,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
     /** @see Erfurt_Store_Adapter_Interface */
     public function exportRdf($modelIri, $serializationType = 'xml', $filename = false)
     {
-        
         throw new Erfurt_Store_Adapter_Exception('Not implemented yet.');
     }
 
@@ -735,13 +714,10 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
 
         // choose the right type for the model instance and instanciate it
         if ($modelInfoCache[$modelIri]['type'] === 'owl') {
-            
             $m = new Erfurt_Owl_Model($modelIri, $baseUri);
         } else if ($this->_modelInfoCache[$modelIri]['type'] === 'rdfs') {
-            
             $m = new Erfurt_Rdfs_Model($modelIri, $baseUri);
         } else {
-            
             $m = new Erfurt_Rdf_Model($modelIri, $baseUri);
         }
 
@@ -801,7 +777,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         }
 
         // invalidate the cache and fetch model infos again
-        
         $cache = Erfurt_App::getInstance()->getCache();
         $cache->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('model_info'));
         $this->_modelInfoCache = null;
@@ -834,7 +809,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
     {
 // TODO fix or remove
         if ($this->_dbConn instanceof Zend_Db_Adapter_Mysqli) {
-            
             $parser = Erfurt_Syntax_RdfParser::rdfParserWithFormat($type);
             $parsedArray = $parser->parse($data, $locator, $modelUri, false);
 
@@ -1032,7 +1006,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
 
             $this->_optimizeTables();
         } else {
-            
             throw new Erfurt_Store_Adapter_Exception('CSV import not supported for this database server.');
         }
     }
@@ -1069,14 +1042,12 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
     /** @see Erfurt_Store_Adapter_Interface */
     public function sparqlAsk($query)
     {
-	//TODO works for me...., why hasnt this be enabled earlier? is the same as sparqlQuery... 
+	//TODO works for me...., why hasnt this be enabled earlier? is the same as sparqlQuery...
         //looks like the engine supports it. but there is probably a reason for this not to be supported
 		$start = microtime(true);
 
-        
         $engine = new Erfurt_Sparql_EngineDb_Adapter_EfZendDb($this->_dbConn, $this->_getModelInfos());
 
-        
         $parser = new Erfurt_Sparql_Parser();
 
         if(!($query instanceof Erfurt_Sparql_Query))
@@ -1100,10 +1071,8 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
 
         $start = microtime(true);
 
-        
         $engine = new Erfurt_Sparql_EngineDb_Adapter_EfZendDb($this->_dbConn, $this->_getModelInfos());
 
-        
         $parser = new Erfurt_Sparql_Parser();
 
         if ( !( $query instanceof Erfurt_Sparql_Query ) ) {
@@ -1149,7 +1118,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
 
 
             if ( $result !== true ) {
-                
                 throw new Erfurt_Store_Adapter_Exception(
                     'SQL query failed: ' .
                     $this->_dbConn->getConnection()->error
@@ -1159,7 +1127,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
             try {
                 $result = @$this->_dbConn->fetchAll($sqlQuery);
             } catch (Zend_Db_Exception $e) { #return false;
-                
                 throw new Erfurt_Store_Adapter_Exception(
                     $e->getMessage()
                 );
@@ -1233,7 +1200,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->getConnection()->query($sql);
 
         if ( !$success ) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_info" failed:' .
                 $this->_dbConn->getConnection()->error
@@ -1248,7 +1214,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->getConnection()->query($sql);
 
         if ( !$success ) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Insertion of "schema_id" into "ef_info" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1270,7 +1235,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->getConnection()->query($sql);
 
         if ( !$success ) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_graph" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1305,7 +1269,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->getConnection()->query($sql);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_stmt" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1327,7 +1290,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->getConnection()->query($sql);
 
         if (!$success) {
-             
              throw new Erfurt_Store_Adapter_Exception('Creation of table "ef_ns" failed: ' .
                             $this->_dbConn->getConnection()->error);
         }
@@ -1346,7 +1308,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->getConnection()->query($sql);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_uri" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1367,7 +1328,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->getConnection()->query($sql);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_lit" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1393,7 +1353,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
        $success = $this->_dbConn->query($sqlsrv);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_info" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1408,7 +1367,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $success = $this->_dbConn->query($sql);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Insertion of "schema_id" into "ef_info" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1436,7 +1394,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
        $success = $this->_dbConn->query($sqlsrv);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_info" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1472,7 +1429,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
        $success = $this->_dbConn->query($sqlsrv);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_info" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1497,7 +1453,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
        $success = $this->_dbConn->query($sqlsrv);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_uri" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1525,7 +1480,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
        $success = $this->_dbConn->query($sqlsrv);
 
         if (!$success) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Creation of table "ef_uri" failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1537,11 +1491,11 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
     {
         if (null === $this->_modelInfoCache) {
             try {
-                // try to fetch model and namespace infos... if all tables are present 
+                // try to fetch model and namespace infos... if all tables are present
                 // this should not lead to an error.
                 $this->_fetchModelInfos();
             } catch (Erfurt_Exception $exception) {
-                // error while fetching model and namespace infos... should only be the 
+                // error while fetching model and namespace infos... should only be the
                 // case if the tables aren't present,
                 // for db connection is already established (in constructor)... so let's check for tables
                 if (!$this->_isSetup()) {
@@ -1553,7 +1507,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                         if ($setupException->getCode() == 20) {
                             $this->_fetchModelInfos();
                         } else {
-                            
                             throw new Erfurt_Store_Adapter_Exception(
                                 'Store: Error while initializing the environment: ' . $setupException->getMessage(),
                                 -1
@@ -1562,9 +1515,8 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                     }
 
                 } else {
-                    
                     throw new Erfurt_Store_Adapter_Exception(
-                        'Store: Error while fetching model and namespace infos.', 
+                        'Store: Error while fetching model and namespace infos.',
                         -1
                     );
                 }
@@ -1597,7 +1549,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         if (isset($this->_modelInfoCache[$graphUri]['modelId'])) {
             $graphId = $this->_modelInfoCache[$graphUri]['modelId'];
         } else {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Failed to clean up value tables: No db id for <' . $graphUri . '> was found.'
             );
@@ -1654,7 +1605,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
             $this->_dbConn->insert($tableName, $data);
         } catch (Exception $e) {
             if ($this->_getNormalizedErrorCode() !== 1000) {
-                
                 throw new Erfurt_Store_Adapter_Exception(
                     "Insertion of value into $tableName failed: " .
                     $e->getMessage()
@@ -1666,7 +1616,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         $result = $this->_dbConn->fetchRow($sql);
 
         if (!$result) {
-            
             throw new Erfurt_Store_Adapter_Exception(
                 'Fetching of uri id failed: ' .
                 $this->_dbConn->getConnection()->error
@@ -1684,7 +1633,7 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
      */
     private function _fetchModelInfos()
     {
-        //It is not possible to use a cache because SQL instead of SPARQL is used. 
+        //It is not possible to use a cache because SQL instead of SPARQL is used.
         //Using a cache causing updating problems.
         $sql = 'SELECT g.id, g.uri, g.uri_r, g.base, g.base_r, s.o, u.v,
                     (SELECT count(*)
@@ -1705,13 +1654,11 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
         try {
             $result = $this->sqlQuery($sql);
         } catch (Exception $e) {
-            
             throw new Erfurt_Exception('Error while fetching model and namespace informations.');
         }
 
 
         if ($result === false) {
-            
             throw new Erfurt_Exception('Error while fetching model and namespace informations.');
         } else {
             $this->_modelInfoCache = array();
@@ -1801,7 +1748,6 @@ class Erfurt_Store_Adapter_EfZendDb implements Erfurt_Store_Adapter_Interface, E
                 return true;
             }
         } else {
-            
             throw new Erfurt_Store_Adapter_Exception('Determining of database tables failed.');
         }
     }

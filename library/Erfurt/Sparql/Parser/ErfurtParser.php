@@ -1,10 +1,10 @@
 <?php
 
 /**
- * This file is part of the {@link http://aksw.org/Projects/Erfurt Erfurt} project.
+ * This file is part of the {@link http://erfurt-framework.org Erfurt} project.
  *
- * @copyright Copyright (c) 2009, {@link http://aksw.org AKSW}
- * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ * @copyright Copyright (c) 2009-2016, {@link http://aksw.org AKSW}
+ * @license   http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
 /**
@@ -16,7 +16,6 @@
  */
 
 
-
 class Erfurt_Sparql_Parser_ErfurtParser implements Erfurt_Sparql_Parser_Interface
 {
 		
@@ -26,7 +25,6 @@ class Erfurt_Sparql_Parser_ErfurtParser implements Erfurt_Sparql_Parser_Interfac
 	}
 
 	public static function initFromString($queryString, $parserOptions = array()){
-		
 		$retval=null;
 		$errors=null;
 		$parser = new Erfurt_Sparql_Parser($queryString);

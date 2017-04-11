@@ -2,12 +2,9 @@
 /**
  * This file is part of the {@link http://erfurt-framework.org Erfurt} project.
  *
- * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
- * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ * @copyright Copyright (c) 2012-2016, {@link http://aksw.org AKSW}
+ * @license   http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
-
-
-
 
 
 
@@ -86,7 +83,6 @@ class Erfurt_Syntax_RdfParser_Adapter_RdfXml extends Erfurt_Syntax_RdfParser_Ada
         )));
         
         if ($fileHandle === false) {
-            
             throw new Erfurt_Syntax_RdfParserException("Failed to open file with filename '$filename'");
         }
         
@@ -144,7 +140,6 @@ class Erfurt_Syntax_RdfParser_Adapter_RdfXml extends Erfurt_Syntax_RdfParser_Ada
         $fileHandle = fopen($filename, 'r');
         
         if ($fileHandle === false) {
-            
             throw new Erfurt_Syntax_RdfParserException("Failed to open file with filename '$filename'");
         }
         
@@ -685,7 +680,6 @@ class Erfurt_Syntax_RdfParser_Adapter_RdfXml extends Erfurt_Syntax_RdfParser_Ada
     
     protected function _throwException($msg)
     {
-        
         throw new Erfurt_Syntax_RdfParserException($msg);
     }
     
