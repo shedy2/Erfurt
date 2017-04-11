@@ -127,32 +127,32 @@ class Erfurt_Store
     protected $_erfurtLogger = null;
 
     // ------------------------------------------------------------------------
-    // --- Private properties -------------------------------------------------
+    // --- protected properties -------------------------------------------------
     // ------------------------------------------------------------------------
 
     /**
      * Access control instance
      * @var Erfurt_Ac_Default
      */
-    private $_ac = null;
+    protected $_ac = null;
 
     /**
      * The name of the backend adapter instance in use.
      * @var string
      */
-    private $_backendName = null;
+    protected $_backendName = null;
 
     /**
      * The backend adapter instance in use.
      * @var Erfurt_Store_Backend_Adapter_Interface
      */
-    private $_backendAdapter = null;
+    protected $_backendAdapter = null;
 
     /**
      * Optional methods a backend adapter can implement
      * @var array
      */
-    private $_optionalMethods = array(
+    protected $_optionalMethods = array(
         'countWhereMatches'
     );
 
@@ -160,20 +160,20 @@ class Erfurt_Store
      * Number of queries committed
      * @var int
      */
-    private static $_queryCount = 0;
+    protected static $_queryCount = 0;
 
     /**
      * importsClosure local cache
      * @var array
      */
-    private $_importsClosure = array();
+    protected $_importsClosure = array();
 
     /**
      * allowedModels local cache
      * used by getModel()
      * @var array
      */
-    private $_allowedModels = array();
+    protected $_allowedModels = array();
 
     // ------------------------------------------------------------------------
     // --- Magic methods ------------------------------------------------------
@@ -994,7 +994,7 @@ EOF;
      *
      * @param string $modelIri
      */
-    private function _getImportsClosure($modelIri, $withHiddenImports = true, $useAC = true)
+    protected function _getImportsClosure($modelIri, $withHiddenImports = true, $useAC = true)
     {
         $currentLevel = $this->_backendAdapter->getImportsClosure($modelIri);
         if ($currentLevel == array($modelIri)) {
@@ -2266,7 +2266,7 @@ if ($options[Erfurt_Store::USE_AC] == false) {
      *
      * @return boolean Returns whether view as the case may be edit is allowed for the model or not.
      */
-    private function _checkAc($modelIri, $accessType = 'view', $useAc = true)
+    protected function _checkAc($modelIri, $accessType = 'view', $useAc = true)
     {
         // check whether ac should be used (e.g. ac engine itself needs access to store without ac)
         if ($useAc === false) {

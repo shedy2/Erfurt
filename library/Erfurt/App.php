@@ -890,7 +890,7 @@ class Erfurt_App
                 $storeOptions = array();
             }
 
-            $this->_store = new Erfurt_Store($storeOptions, $backend, $backendOptions, $schema);
+            $this->_store = new CRM2_Erfurt_Store($storeOptions, $backend, $backendOptions, $schema);
 
             // Make sure the store is initialized
             try {

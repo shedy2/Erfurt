@@ -197,7 +197,7 @@ class Erfurt_Sparql_Query2 //extends Erfurt_Sparql_Query2_ContainerHelper
             $sparql .= 'FROM '.$from->getSparql()." \n";
         }
         
-        $sparql .= 'WHERE '.$this->where->getSparql();
+        $sparql .= 'WHERE { '.$this->where->getSparql().' } ';
 
         if ($this->type != self::typeAsk) {
             if ($this->hasOrderBy()) {
