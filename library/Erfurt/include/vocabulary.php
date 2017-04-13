@@ -53,7 +53,7 @@ define('EF_RDF_PROPERTY', EF_RDF_NS.'Property');
 	
 define('EF_RDFS_COMMENT', EF_RDFS_NS.'comment');
 define('EF_RDFS_LABEL', EF_RDFS_NS.'label');
-define('EF_RDF_SP', EF_RDFS_NS.'singletonPropertyOf');
+define('EF_RDF_SP', EF_RDF_NS.'singletonPropertyOf');
 define('EF_RDFS_SUBCLASSOF', EF_RDFS_NS.'subClassOf');
 define('EF_RDFS_SUBPROPERTYOF', EF_RDFS_NS.'subPropertyOf');
 define('EF_RDFS_DATATYPE', EF_RDFS_NS.'Datatype');
