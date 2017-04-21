@@ -37,6 +37,10 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
 
         if($unexpandablePrefix !== null && is_string($unexpandablePrefix)){
             $this->unexpandablePrefix = $unexpandablePrefix;
+
+            if (!W::model()->getNamespaceByPrefix($unexpandablePrefix)) {
+                throw new Exception("Prefix $unexpandablePrefix not found!");
+            }
         }
 
         parent::__construct();
