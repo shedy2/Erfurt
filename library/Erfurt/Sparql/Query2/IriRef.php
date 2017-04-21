@@ -1,15 +1,17 @@
 <?php
 /**
- * This file is part of the {@link http://erfurt-framework.org Erfurt} project.
+ * This file is part of the {@link http://aksw.org/Projects/Erfurt Erfurt} project.
  *
- * @copyright Copyright (c) 2012-2016, {@link http://aksw.org AKSW}
- * @license   http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
+ * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
+
+
 
 
 /**
  * Erfurt_Sparql Query - IriRef.
- * 
+ *
  * @package    Erfurt_Sparql_Query2
  * @author     Jonas Brekle <jonas.brekle@gmail.com>
  * @copyright  Copyright (c) 2012, {@link http://aksw.org AKSW}
@@ -19,7 +21,7 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
     protected $iri;
     protected $prefix = null;
     protected $unexpandablePrefix = null;
-    
+
     /**
      * @param string $nresource
      * @param Erfurt_Sparql_Query2_Prefix $prefix
@@ -30,22 +32,28 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
             throw new RuntimeException('wrong argument 1 passed to Erfurt_Sparql_Query2_IriRef::__construct. string expected. '.typeHelper($nresource).' found.');
         }
         $this->iri = $nresource;
-                
+
         if ($prefix != null) {
             $this->prefix = $prefix;
         }
 
         if($unexpandablePrefix !== null && is_string($unexpandablePrefix)){
-            $this->unexpandablePrefix = $unexpandablePrefix;
+            $namespaces = OntoWiki::getInstance()->selectedModel->getNamespaces();
+            $ns = array_search($unexpandablePrefix, $namespaces);
 
-            if (!W::model()->getNamespaceByPrefix($unexpandablePrefix)) {
-                throw new Exception("Prefix $unexpandablePrefix not found!");
+            if($ns) {
+                $this->prefix = new Erfurt_Sparql_Query2_Prefix($unexpandablePrefix, $ns);
+            } else {
+                $this->unexpandablePrefix = $unexpandablePrefix;
+                throw new Exception("Prefix $unexpandablePrefix not found");
             }
+        } else {
+            $this->iri = OntoWiki_Utils::expandNamespace($this->iri);
         }
 
         parent::__construct();
     }
-       
+
     /**
      * getSparql
      * build a valid sparql representation of this obj - should be like "<http://example.com>" or "ns:local"
@@ -62,11 +70,11 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
             return '<'.$this->iri.'>';
         }
     }
-    
-    public function __toString() {    
+
+    public function __toString() {
         return $this->getSparql();
     }
-    
+
     /**
      * isPrefixed
      * check if this IriRef uses a prefix
@@ -74,7 +82,7 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
     public function isPrefixed() {
         return $this->prefix != null || $this->unexpandablePrefix !== null;
     }
-    
+
     /**
      * getIri
      * get the iri - may be only the local part if prefixed
@@ -82,9 +90,13 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
      * @see getExpanded
      */
     public function getIri() {
+        if($this->prefix != null){
+            return $this->prefix->getPrefixIri()->iri . $this->iri;
+        }
+
         return $this->iri;
     }
-    
+
     /**
      * getExpanded
      * expand the prefix
