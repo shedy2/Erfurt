@@ -670,8 +670,7 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         // load query config variables
         extract($this->_getQueryConfig($resultFormat));
 
-        /* Иногда сюда попадают ASK-запросы (которые изначально были SELECT).
-         * Скорее всего анализатор понимает, что запрос длинный и сперва делает ASK.
+        /* Иногда сюда попадают ASK-запросы
          * Но виртуозо с 6ой версии не поддерживает json в том формате, как тут было
          * описано для extended формата. Поэтому мы избавляемся от префикса и эмулируем
          * нужное поведение
