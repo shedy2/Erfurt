@@ -670,6 +670,18 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         // load query config variables
         extract($this->_getQueryConfig($resultFormat));
 
+        /* Иногда сюда попадают ASK-запросы (которые изначально были SELECT).
+         * Скорее всего анализатор понимает, что запрос длинный и сперва делает ASK.
+         * Но виртуозо с 6ой версии не поддерживает json в том формате, как тут было
+         * описано для extended формата. Поэтому мы избавляемся от префикса и эмулируем
+         * нужное поведение
+         */
+        $isAsk = (strpos($query, 'SELECT') === FALSE) || (strpos($query, 'ASK') !== FALSE && strpos($query, 'ASK') < strpos($query, 'SELECT'));
+
+        if ($isAsk) {
+            $queryPrefix = '';
+        }
+
         // prepare query
         $query = $queryPrefix
                . PHP_EOL
@@ -681,8 +693,15 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
 
             // map single field to complete result
             if ($singleField) {
-                // the result is in the first field of the first row
-                $result = current(current($result));
+                if (!$isAsk) {
+                    // the result is in the first field of the first row
+                    $result = current(current($result));
+                } else {
+                    $result = json_encode([
+                        'head' => [ 'link' => '' ],
+                        'boolean' => !!$result
+                    ]);
+                }
             }
 
             // convert XML result

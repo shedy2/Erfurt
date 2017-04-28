@@ -642,7 +642,9 @@ class Erfurt_Rdf_Model
         $options[Erfurt_Store::USE_AC] = true;
 
         if (is_string($query)) {
+            //$isAsk = (strpos($query, 'SELECT') === FALSE) || (strpos($query, 'ASK') !== FALSE && strpos($query, 'ASK') < strpos($query, 'SELECT'));
             $query = Erfurt_Sparql_SimpleQuery::initWithString($query);
+            //$query->setAsk($isAsk);
         }
 
         // restrict to this model

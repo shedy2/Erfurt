@@ -83,7 +83,7 @@ class Erfurt_Sparql_SimpleQuery
             $queryString .= 'ORDER BY ' . $this->_orderClause . PHP_EOL;
         }
 
-        if ($this->_limit !== null) {
+        if (!$this->isAsk() && $this->_limit !== null) {
             $queryString .= 'LIMIT ' . $this->_limit . PHP_EOL;
         }
 
@@ -124,7 +124,7 @@ class Erfurt_Sparql_SimpleQuery
         $tokens = array(
             'prefix'        => '/((PREFIX\s+[^:\s]+:\s+<[^\s]*>\s*)+)/si',
             'base'          => '/BASE\s+<(.+?)>/i',
-            'ask'           => '/(ASK)/si',
+            'ask'           => '/^[^{]*(ASK)/si',
             'old_count'     => '/(COUNT\s+(FROM|WHERE))/si',
             'select_clause' => '/((SELECT\s+)(DISTINCT\s+)?)(\*|((COUNT\s*\((\?\w*|\*)\)\s+(as\s+(\?\w+\s+))?)|(\?\w+\s+))*)/si',
             'from'          => '/FROM\s+<(.+?)>/i',
