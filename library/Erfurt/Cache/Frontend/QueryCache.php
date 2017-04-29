@@ -72,15 +72,27 @@ class Erfurt_Cache_Frontend_QueryCache
             $queryResult = serialize($queryResult);
 
             // retrieve TriplePattern and graphUris
-            $parsedQuery = $this->parseQuery($queryString);
-            $triplePatterns = $parsedQuery['triples'];
-            $graphUris = $parsedQuery['graphs'];
+
+            /**
+             * TODO: Erfurt_Sparql_Query2 неправильно парсит некоторые наши кастомные участки. Поэтому мы просто
+             * пропускаем момент парсинга (я не вижу, где используется triplePatterns, а все запросы у нас в рамках одного графа
+             *
+             * Какие есть варианты?
+             * 1) без парсинга Sparql - идти в свою реализацию кеша на Redis - простой топорный метод
+             * 2) Бустить парсер Erfurt_Sparql_Query2 (но там компиленный код) = сделать свой парсер на основе ARC2 - чуть дольше для этой задачи (просто кеш врубить),
+             *      багов может потянуть, но в перспективе жизнь упростит
+             * 3) Вариант бустить сам кеш ерфурта, чтобы он юзал SimpleQuery (это их старый класс для запросов, он более простой, поэтому понимает все штуки)
+             */
+            //$parsedQuery = $this->parseQuery($queryString);
+            //$triplePatterns = $parsedQuery['triples'];
+            $graphUris = [ W::model()->getBaseIri() ]; // $parsedQuery['graphs'];
+
             // saving the Query and the Result with the configured Backend
             $result =  $this->getBackend()->save(
                 $queryId,
                 $queryString,
                 $graphUris,
-                $triplePatterns,
+                [ /* $triplePatterns */],
                 $queryResult,
                 $duration
             );
