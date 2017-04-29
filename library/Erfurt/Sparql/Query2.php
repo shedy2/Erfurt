@@ -725,8 +725,12 @@ class Erfurt_Sparql_Query2 //extends Erfurt_Sparql_Query2_ContainerHelper
      * @param Erfurt_Sparql_Query2_Var $var 
      * @return Erfurt_Sparql_Query2 $this
      */
-    public function addProjectionVar(Erfurt_Sparql_Query2_Var $var)
+    public function addProjectionVar($var)
     {
+        if (!$var instanceof Erfurt_Sparql_Query2_Var) {
+            throw new Exception('Erfurt_Sparql_Query2::addProjectionVar expected Erfurt_Sparql_Query2_Var. '.get_class($var).' given');
+        }
+
         foreach ($this->projectionVars as $myVar){
             if($myVar->equals($var)){
                 //already added
