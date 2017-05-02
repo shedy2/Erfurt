@@ -85,6 +85,11 @@ class Erfurt_Cache_Frontend_QueryCache
              */
             //$parsedQuery = $this->parseQuery($queryString);
             //$triplePatterns = $parsedQuery['triples'];
+
+            if (!W::model()) {
+                return false; // Модель не выбрана, такое пока не сохраняем
+            }
+            
             $graphUris = [ W::model()->getBaseIri() ]; // $parsedQuery['graphs'];
 
             // saving the Query and the Result with the configured Backend
