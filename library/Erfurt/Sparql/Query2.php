@@ -156,9 +156,12 @@ class Erfurt_Sparql_Query2 //extends Erfurt_Sparql_Query2_ContainerHelper
         if ($this->hasBase()) {
             $sparql .= 'BASE '.$this->base->getSparql()." \n";
         }
-        
-        foreach ($this->prefixes as $prefix)
-            $sparql .= $prefix->getSparql()." \n";
+
+        $sparql .= 'PREFIX '.W::model()->getNamespacePrefix(W::ontUri()).': <'.W::ontUri().'>';
+
+        foreach ($this->prefixes as $prefix) {
+            $sparql .= $prefix->getSparql() . " \n";
+        }
         
         $sparql .= $this->type.' ';
         
