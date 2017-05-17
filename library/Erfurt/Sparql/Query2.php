@@ -555,6 +555,13 @@ class Erfurt_Sparql_Query2 //extends Erfurt_Sparql_Query2_ContainerHelper
                 || is_string($from)
             )
         ) {
+            if ($from == 0) {
+                /**
+                 * TODO: при работе с несуществующими для онтовики моделями могут создаваться uri и онтовики пытается их сюда просунуть.
+                 * Необходимо избавиться в принципе от таких KB
+                 */
+                return $this;
+            }
             throw new RuntimeException('Argument 1 passed to '.
                 'Erfurt_Sparql_Query2::addFrom must be an instance of '.
                 'Erfurt_Sparql_Query2_GraphClause or Erfurt_Sparql_Query2_IriRef'.
