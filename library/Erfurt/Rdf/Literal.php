@@ -20,6 +20,22 @@ class Erfurt_Rdf_Literal extends Erfurt_Rdf_Node {
     protected $_label = false;
     protected $_lang = null;
     protected $_datatype = null;
+    /* Пробуем все литералы юзать с bif:contains */
+    public static $counter = 0;
+
+    public static function getNewTmpVarName()
+    {
+        return '?lit_'.self::$counter++;
+    }
+
+    public function getSparql()
+    {
+        return $this->varName.'.
+        '.$this->varName.' bif:contains \'"'.$this->_label.'"\'';
+
+        return '"'.str_replace('"', '\"', str_replace("\r", "\\r", str_replace("\n","\\n", $this->getLabel()))).'"'.($this->_lang ? '@'.$this->_lang : '');
+        //return "'''".$this->__toString()."'''"; - у спаркла еще есть три кавычки '''The librarian said, "Perhaps you would enjoy 'War and Peace'."'''
+    }
 
     protected function __construct($label) {
         $this->_label = $label;
@@ -31,6 +47,8 @@ class Erfurt_Rdf_Literal extends Erfurt_Rdf_Node {
      * @return string
      */
     public function __toString() {
+        return $this->getSparql();
+
         if ( $this->getLabel() ) {
             $ret = $this->getLabel();
             if ( $this->getDatatype() ) {
