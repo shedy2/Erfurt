@@ -1810,7 +1810,11 @@ if ($options[Erfurt_Store::USE_AC] == false) {
             $queryObject = new Erfurt_Sparql_SimpleQuery();
             $queryObject->setSelectClause('SELECT ?s ?p ?o');
             $queryObject->setFrom(array($sysOntModelUri));
-            $queryObject->setWherePart('WHERE { ?s ?p ?o . ?s a <http://ns.ontowiki.net/SysOnt/Model> }');
+            $queryObject->setWherePart('WHERE { 
+                    ?s ?p ?o . 
+                    ?s a <http://ns.ontowiki.net/SysOnt/Model>.
+                    FILTER (?s = <'.$graphUri.'>)
+            }');
 
             $queryoptions = array(
                 Erfurt_Store::USE_AC                    => false,
