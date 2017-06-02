@@ -31,11 +31,11 @@ class Erfurt_Sparql_Query2_GroupOrUnionGraphPattern extends Erfurt_Sparql_Query2
         $countElements = count($this->elements);
 
         for ($i = 0; $i < $countElements; ++$i) {
-            if($this->elements[$i] instanceof Erfurt_Sparql_Query2_OptionalGraphPattern){
+            if($this->elements[$i] instanceof Erfurt_Sparql_Query2_GroupGraphPattern){
                $sparql .= ' { ';
             }
             $sparql .= $this->elements[$i]->getSparql();
-            if($this->elements[$i] instanceof Erfurt_Sparql_Query2_OptionalGraphPattern){
+            if($this->elements[$i] instanceof Erfurt_Sparql_Query2_GroupGraphPattern){
                $sparql .= ' } ';
             }
             if ($i < (count($this->elements)-1)) {
