@@ -1079,7 +1079,7 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         return $resultId;
     }
 
-    private function _execSparqlUpdate($sparqlQuery, $graphUri = null)
+    public function _execSparqlUpdate($sparqlQuery, $graphUri = null)
     {
         $graphUri = (string)$graphUri;
 
