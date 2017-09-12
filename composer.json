@@ -10,15 +10,9 @@
             "homepage": "http://aksw.org"
         }
     ],
-    "repositories": [
-        {
-            "url": "https://github.com/almatyartem/arc2.git",
-            "type": "vcs"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
-        "semsol/arc2": "dev-almatyartem",
+        "a2e/arc2" : "dev-master",
         "zendframework/zendframework1": "1.*",
         "easyrdf/easyrdf": "0.9.*"
     },
