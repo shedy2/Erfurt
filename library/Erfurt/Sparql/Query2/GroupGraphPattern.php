@@ -91,7 +91,7 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
 
             $sparql .= $this->elements[$i]->getSparql();
 
-            if ($this->elements[$i+1] instanceof Core_Query2_Nothing) {
+            if (isset($this->elements[$i+1]) && $this->elements[$i+1] instanceof Core_Query2_Nothing) {
                 $sparql .= ' .';
             }
             //realisation of TriplesBlock
