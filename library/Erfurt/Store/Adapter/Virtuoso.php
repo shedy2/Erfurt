@@ -1067,11 +1067,12 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         //$virtuosoPl = 'SPARQL ' . $sparqlQuery;
 
         $virtuosoPl = $graphSpec . 'CALL DB.DBA.SPARQL_EVAL(\'' . $sparqlQuery . '\', ' . $graphUri . ', 0)';
-#        $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
-#        $resultId   = odbc_exec($resultId, $virtuosoPl);
-        $resultId   = @odbc_exec($this->connection(), $virtuosoPl);
+        $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
+        $odbcTimeout = isset($this->_adapterOptions['odbc_timeout']) ? $this->_adapterOptions['odbc_timeout'] : 30;
+        odbc_setoption($resultId, 2, 0, $odbcTimeout);
+        $status   = odbc_execute($resultId);
 
-        if (false === $resultId) {
+        if (false === $resultId || $status === false) {
             $message = sprintf('SPARQL Error: %s on querying graph <%s> with query: %s', $this->getLastError(), $graphUri, $sparqlQuery);
             throw new Erfurt_Store_Adapter_Exception($message);
         }
@@ -1095,11 +1096,12 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
 
         //build Virtuoso/PL query
         $virtuosoPl = 'SPARQL ' . $sparqlQuery;
-#        $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
-#        $resultId   = odbc_exec($resultId, $virtuosoPl);
-        $resultId   = odbc_exec($this->connection(), $virtuosoPl);
+        $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
+        $odbcTimeout = isset($this->_adapterOptions['odbc_timeout']) ? $this->_adapterOptions['odbc_timeout'] : 30;
+        odbc_setoption($resultId, 2, 0, $odbcTimeout);
+        $status   = odbc_execute($resultId);
 
-        if (false === $resultId) {
+        if (false === $resultId || $status === false) {
             $message = sprintf("SPARQL Error: %s\n\n In query: %s", $this->getLastError(), htmlentities($sparqlQuery));
             throw new Erfurt_Store_Adapter_Exception($message);
         }
