@@ -1068,7 +1068,12 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
 
         $virtuosoPl = $graphSpec . 'CALL DB.DBA.SPARQL_EVAL(\'' . $sparqlQuery . '\', ' . $graphUri . ', 0)';
         $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
+
         $odbcTimeout = isset($this->_adapterOptions['odbc_timeout']) ? $this->_adapterOptions['odbc_timeout'] : 30;
+        $odbcTimeout = defined('VIRTUOSO_ODBC_TIMEOUT') && is_int(VIRTUOSO_ODBC_TIMEOUT)
+            ? VIRTUOSO_ODBC_TIMEOUT
+            : $odbcTimeout;
+        
         odbc_setoption($resultId, 2, 0, $odbcTimeout);
         $status   = odbc_execute($resultId);
 
