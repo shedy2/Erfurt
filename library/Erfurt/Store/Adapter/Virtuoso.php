@@ -88,6 +88,8 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
 
     private $_httpClientAdapter = null;
 
+    protected $odbcTimeout;
+
     // ------------------------------------------------------------------------
     // --- Magic Methods ------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -1070,10 +1072,10 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
 
         $odbcTimeout = isset($this->_adapterOptions['odbc_timeout']) ? $this->_adapterOptions['odbc_timeout'] : 30;
-        $odbcTimeout = defined('VIRTUOSO_ODBC_TIMEOUT') && is_int(VIRTUOSO_ODBC_TIMEOUT)
-            ? VIRTUOSO_ODBC_TIMEOUT
+        $odbcTimeout = $this->odbcTimeout && is_int($this->odbcTimeout)
+            ? $this->odbcTimeout
             : $odbcTimeout;
-        
+
         odbc_setoption($resultId, 2, 0, $odbcTimeout);
         $status   = odbc_execute($resultId);
 
@@ -1400,5 +1402,10 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
     public function setHttpClientAdapter($httpClientAdapter)
     {
         $this->_httpClientAdapter = $httpClientAdapter;
+    }
+
+    public function setOdbcTimeout($odbcTimeout)
+    {
+        $this->odbcTimeout = $odbcTimeout;
     }
 }
