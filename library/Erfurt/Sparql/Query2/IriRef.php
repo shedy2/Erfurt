@@ -67,6 +67,9 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
                 return $this->unexpandablePrefix.':'.$this->iri;
             }
         } else {
+            if ($this->iri == 'bif:contains') {
+                return $this->iri;
+            }
             return '<'.$this->iri.'>';
         }
     }
