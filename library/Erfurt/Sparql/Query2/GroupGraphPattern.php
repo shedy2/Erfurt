@@ -85,13 +85,13 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
         $sparql = "";
 
         for ($i=0; $i < $countElements; ++$i) {
-            if ($this->elements[$i] instanceof Core_Query2_Bind) {
+            if ($this->elements[$i] instanceof \Core\Query2\Bind) {
                 continue;
             }
 
             $sparql .= $this->elements[$i]->getSparql();
 
-            if (isset($this->elements[$i+1]) && $this->elements[$i+1] instanceof Core_Query2_Nothing) {
+            if (isset($this->elements[$i+1]) && $this->elements[$i+1] instanceof \Core\Query2\Nothing) {
                 $sparql .= ' .';
             }
             //realisation of TriplesBlock
@@ -104,7 +104,7 @@ class Erfurt_Sparql_Query2_GroupGraphPattern extends Erfurt_Sparql_Query2_Contai
         }
 
         for ($i=0; $i < $countElements; ++$i) {
-            if ($this->elements[$i] instanceof Core_Query2_Bind) {
+            if ($this->elements[$i] instanceof \Core\Query2\Bind) {
                 $sparql .= $this->elements[$i]->getSparql()." \n";
             }
         }

@@ -34,7 +34,7 @@ class Erfurt_Syntax_RdfSerializer_Adapter_NTriples implements Erfurt_Syntax_RdfS
                 $query->addTriple($s, $p, $o);
             } else {
                 //should not happen
-                throw new OntoWiki_Exception(
+                throw new \OntoWiki\Exception(
                     'serializeQueryResultToString expects the query to contain the triple ' .
                     '?resourceUri ?p ?o .'
                 );

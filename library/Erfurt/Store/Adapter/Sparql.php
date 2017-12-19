@@ -112,7 +112,7 @@ class Erfurt_Store_Adapter_Sparql implements Erfurt_Store_Adapter_Interface
     public function getModel($graphUri)
     {
         if (isset($this->_configuredGraphs[$graphUri])) {
-            $m = new CRM2_Erfurt_Owl_Model($graphUri, null);
+            $m = new \CRM2\Erfurt\Owl\Model($graphUri, null);
 
             return $m;
         } else {
@@ -260,7 +260,7 @@ class Erfurt_Store_Adapter_Sparql implements Erfurt_Store_Adapter_Interface
         $ret = @$xmlDoc->loadXML($sparqlXmlResults);
 
         if ($ret === false) {
-            throw new OntoWiki_Exception('SPARQL store could not parse the xml result "'.htmlentities($sparqlXmlResults).'"');
+            throw new \OntoWiki\Exception('SPARQL store could not parse the xml result "'.htmlentities($sparqlXmlResults).'"');
         }
 
         $headElems = $xmlDoc->getElementsByTagName('head');
