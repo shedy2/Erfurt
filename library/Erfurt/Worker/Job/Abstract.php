@@ -206,7 +206,7 @@ abstract class Erfurt_Worker_Job_Abstract
         $keyId = $this->_getCacheIdForKeyAndScope($key, $scope);
 
         // try to load the cached value
-        $objectCache = OntoWiki::getInstance()->erfurt->getCache();
+        $objectCache = \OntoWiki::getInstance()->erfurt->getCache();
         $theValue    = $objectCache->load($keyId);
         return $theValue;
     }
@@ -224,7 +224,7 @@ abstract class Erfurt_Worker_Job_Abstract
     protected function setValue($value, $key, $scope = self::SCOPE_PRIVATE)
     {
         $keyId = $this->_getCacheIdForKeyAndScope($key, $scope);
-        $objectCache = OntoWiki::getInstance()->erfurt->getCache();
+        $objectCache = \OntoWiki::getInstance()->erfurt->getCache();
         $objectCache->save($value, $keyId);
     }
 

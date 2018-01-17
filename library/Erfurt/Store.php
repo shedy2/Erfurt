@@ -1097,7 +1097,7 @@ EOF;
 
             switch ($modelType) {
                 case self::MODEL_TYPE_OWL :
-                    $modelInstance = new CRM2_Erfurt_Owl_Model($modelIri);
+                    $modelInstance = new \CRM2\Erfurt\Owl\Model($modelIri);
                     break;
                 case self::MODEL_TYPE_RDFS :
                     $modelInstance = new Erfurt_Rdfs_Model($modelIri);
@@ -2081,7 +2081,7 @@ if ($options[Erfurt_Store::USE_AC] == false) {
             } else {
                 return null;
             }
-        } catch (Excpetion $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

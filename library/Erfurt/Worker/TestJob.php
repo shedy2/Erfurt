@@ -21,7 +21,7 @@ class Erfurt_Worker_TestJob extends Erfurt_Worker_Job_Abstract
             if (!empty($load->repeat) && (int)$load->repeat > 0) {
                 $repeat = $load->repeat;
                 $this->logSuccess("started ($repeat to go)");
-                OntoWiki::getInstance()->callJob(
+                \OntoWiki::getInstance()->callJob(
                     'test',
                     array('repeat' => $repeat-1)
                 );

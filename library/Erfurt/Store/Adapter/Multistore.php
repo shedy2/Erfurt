@@ -42,7 +42,7 @@ class Erfurt_Store_Adapter_Multistore implements Erfurt_Store_Adapter_Interface,
                 $this->_backends[self::DEFAULT_BACKEND] = new Erfurt_Store_Adapter_EfZendDb($defaultAdapterOptions);
                 break;
             case 'virtuoso':
-                $this->_backends[self::DEFAULT_BACKEND] = new CRM2_Erfurt_Store_Adapter_Virtuoso($defaultAdapterOptions);
+                $this->_backends[self::DEFAULT_BACKEND] = new \CRM2\Erfurt\Store\Adapter\Virtuoso($defaultAdapterOptions);
                 break;
             default:
                 throw new Erfurt_Store_Adapter_Exception('Wrong default backend type specified.');
@@ -66,7 +66,7 @@ class Erfurt_Store_Adapter_Multistore implements Erfurt_Store_Adapter_Interface,
                         $this->_backends[self::BACKEND_PREFIX.$i] = new Erfurt_Store_Adapter_EfZendDb($backendOptions);
                         break;
                     case 'virtuoso':
-                        $this->_backends[self::BACKEND_PREFIX.$i] = new CRM2_Erfurt_Store_Adapter_Virtuoso($backendOptions);
+                        $this->_backends[self::BACKEND_PREFIX.$i] = new \CRM2\Erfurt\Store\Adapter\Virtuoso($backendOptions);
                         break;
                     case 'sparql':
                         $this->_backends[self::BACKEND_PREFIX.$i] = new Erfurt_Store_Adapter_Sparql($backendOptions);

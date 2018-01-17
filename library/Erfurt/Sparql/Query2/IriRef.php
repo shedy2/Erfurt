@@ -38,7 +38,7 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
         }
 
         if($unexpandablePrefix !== null && is_string($unexpandablePrefix)){
-            $namespaces = OntoWiki::getInstance()->selectedModel->getNamespaces();
+            $namespaces = \OntoWiki::getInstance()->selectedModel->getNamespaces();
             $ns = array_search($unexpandablePrefix, $namespaces);
 
             if($ns) {
@@ -48,7 +48,7 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
                 throw new Exception("Prefix $unexpandablePrefix not found");
             }
         } else {
-            $this->iri = OntoWiki_Utils::expandNamespace($this->iri);
+            $this->iri = \OntoWiki\Utils::expandNamespace($this->iri);
         }
 
         parent::__construct();
