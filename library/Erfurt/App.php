@@ -130,6 +130,12 @@ class Erfurt_App
     private $_store = null;
 
     /**
+     * Contains an instance of the cached store.
+     * @var Erfurt_Store
+     */
+    private $_cacheStore = null;
+
+    /**
      * Contains an instanciated system ontology model.
      * @var Erfurt_Rdf_Model
      */
@@ -908,6 +914,83 @@ class Erfurt_App
     public function setStore(Erfurt_Store $store)
     {
         $this->_store = $store;
+    }
+
+    /**
+     * Check if cached storage available
+     *
+     * @return bool
+     */
+    public function isCacheStoreAvailable()
+    {
+        try {
+            $this->getCacheStore();
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns a instance of the cache store.
+     *
+     * @return \CRM2\Erfurt\Store
+     * @throws Erfurt_Exception Throws an exception if the store is not configured right.
+     */
+    public function getCacheStore()
+    {
+        if (null === $this->_cacheStore) {
+            $config = $this->getConfig();
+
+            // Backend must be set, else throw an exception.
+            if (isset($config->cache_store->backend)) {
+                $backend = strtolower($config->cache_store->backend);
+            } else {
+                throw new Erfurt_Exception('Backend must be set in configuration.');
+            }
+
+            // Check configured schema and if not set set it as empty (e.g. virtuoso needs no special schema.
+            if (isset($config->cache_store->schema)) {
+                $schema = $config->cache_store->schema;
+            } else {
+                $schema = null;
+            }
+
+            // fetch backend specific options from config.
+            $backendOptions = array();
+            if ($backendConfig = $config->cache_store->get($backend)) {
+                $backendOptions = $backendConfig->toArray();
+            }
+
+            // store config options
+            if (isset($config->sysont)) {
+                $storeOptions = $config->sysont->toArray();
+            } else {
+                $storeOptions = array();
+            }
+
+            $this->_cacheStore = new \CRM2\Erfurt\Store($storeOptions, $backend, $backendOptions, $schema);
+
+            // Make sure the store is initialized
+            try {
+                $this->_cacheStore->checkSetup();
+            } catch (Erfurt_Store_Exception $e) {
+                if ($e->getCode() != 20) {
+                    throw $e;
+                }
+            }
+        }
+
+        return $this->_cacheStore;
+    }
+
+    /**
+     * @param Erfurt_Store $store
+     */
+    public function setCacheStore(Erfurt_Store $store)
+    {
+        $this->_cacheStore = $store;
     }
 
     /**
