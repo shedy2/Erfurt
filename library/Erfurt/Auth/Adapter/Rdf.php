@@ -403,6 +403,7 @@ class Erfurt_Auth_Adapter_Rdf implements Zend_Auth_Adapter_Interface
                 'user_username'   => $config->ac->user->name,
                 'user_password'   => $config->ac->user->pass,
                 'user_mail'       => $config->ac->user->mail,
+                'user_lang'       => '', // !!!
                 'user_superadmin' => $config->ac->user->superAdmin,
                 'user_anonymous'  => $config->ac->user->anonymousUser,
                 'action_deny'     => $config->ac->action->deny,
