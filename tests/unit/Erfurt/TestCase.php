@@ -284,4 +284,18 @@ class Erfurt_TestCase extends PHPUnit_Framework_TestCase
             }
         }
     }
+
+    /**
+     * Проверить, что строки одинаковые за исключением пробельных символов.
+     * Полезно, когда хочется сравнить рендеры
+     *
+     * @param $expected
+     * @param $got
+     * @param string $message
+     */
+    public function assertStringEqualsIgnoreWhitespace($expected, $got, $message = '')
+    {
+        return $this->assertEquals(preg_replace('/\s+/', '', $expected),
+            preg_replace('/\s+/', '', $got), $message);
+    }
 }
