@@ -136,6 +136,12 @@ class Erfurt_App
     private $_cacheStore = null;
 
     /**
+     * Overrides config value of cache store enabled flag.
+     * @var bool|null
+     */
+    private $_cacheStoreEnabled = null;
+
+    /**
      * Contains an instanciated system ontology model.
      * @var Erfurt_Rdf_Model
      */
@@ -933,6 +939,41 @@ class Erfurt_App
     }
 
     /**
+     * Check if cached storage enabled
+     *
+     * @return bool
+     */
+    public function isCacheStoreEnabled()
+    {
+        if (null === $this->_cacheStore) {
+            if (is_null($this->_cacheStoreEnabled)) {
+                $config = $this->getConfig();
+
+                if (isset($config->cache_store->enabled)) {
+                    return (bool) $config->cache_store->enabled;
+                } else {
+                    return false;
+                }
+            } else {
+                return (bool) $this->_cacheStoreEnabled;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Set cache store enabled flag.
+     * Default value from config will be used if NULL.
+     *
+     * @param bool|null $cacheStoreEnabled
+     */
+    public function setCacheStoreEnabled($cacheStoreEnabled = null)
+    {
+        $this->_cacheStoreEnabled = $cacheStoreEnabled;
+    }
+
+    /**
      * Returns a instance of the cache store.
      *
      * @return \CRM2\Erfurt\Store
@@ -940,6 +981,10 @@ class Erfurt_App
      */
     public function getCacheStore()
     {
+        if (!$this->isCacheStoreEnabled()) {
+            throw new Erfurt_Exception('Virtuoso cache storage disabled.');
+        }
+
         if (null === $this->_cacheStore) {
             $config = $this->getConfig();
 
