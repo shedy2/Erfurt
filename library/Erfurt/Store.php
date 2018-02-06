@@ -1450,7 +1450,7 @@ EOF;
         if (is_string($optionValue)) {
             $this->_options[$optionName] = $optionValue;
         } else if (is_array($optionValue)) {
-            while (list($subName, $subValue) = each($optionValue)) {
+            foreach ($optionValue as $subName => $subValue) {
                 $subOptionName = $optionName
                                . ucfirst($subName);
                 $this->setOption($subOptionName, $subValue);
