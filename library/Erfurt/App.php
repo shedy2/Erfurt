@@ -984,7 +984,7 @@ class Erfurt_App
         if (!$this->isCacheStoreEnabled()) {
             throw new Erfurt_Exception('Virtuoso cache storage disabled.');
         }
-
+      
         if (null === $this->_cacheStore) {
             $config = $this->getConfig();
 
