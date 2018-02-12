@@ -23,6 +23,7 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
     // --- Class Constants ----------------------------------------------------
     // ------------------------------------------------------------------------
 
+    const DEFAULT_ODBC_TIMEOUT = 30;
     /**
      * Prefix for blanknode identifiers.
      * @var string
@@ -1040,6 +1041,15 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         }
     }
 
+    private function _getOdbcTimeout() {
+        
+        return ($this->odbcTimeout && is_int($this->odbcTimeout)) ? 
+                $this->odbcTimeout :
+                (isset($this->_adapterOptions['odbc_timeout']) ? 
+                    $this->_adapterOptions['odbc_timeout']   :
+                    self::DEFAULT_ODBC_TIMEOUT
+        );
+    }
     /**
      * Executes a SPARQL query and returns an ODBC result identifier.
      *
@@ -1071,12 +1081,7 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         $virtuosoPl = $graphSpec . 'CALL DB.DBA.SPARQL_EVAL(\'' . $sparqlQuery . '\', ' . $graphUri . ', 0)';
         $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
 
-        $odbcTimeout = isset($this->_adapterOptions['odbc_timeout']) ? $this->_adapterOptions['odbc_timeout'] : 30;
-        $odbcTimeout = $this->odbcTimeout && is_int($this->odbcTimeout)
-            ? $this->odbcTimeout
-            : $odbcTimeout;
-
-        odbc_setoption($resultId, 2, 0, $odbcTimeout);
+        odbc_setoption($resultId, 2, 0, $this->_getOdbcTimeout());
         $status   = odbc_execute($resultId);
 
         if (false === $resultId || $status === false) {
@@ -1104,8 +1109,7 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         //build Virtuoso/PL query
         $virtuosoPl = 'SPARQL ' . $sparqlQuery;
         $resultId   = odbc_prepare($this->connection(), $virtuosoPl);
-        $odbcTimeout = isset($this->_adapterOptions['odbc_timeout']) ? $this->_adapterOptions['odbc_timeout'] : 30;
-        odbc_setoption($resultId, 2, 0, $odbcTimeout);
+        odbc_setoption($resultId, 2, 0, $this->_getOdbcTimeout());
         $status   = odbc_execute($resultId);
 
         if (false === $resultId || $status === false) {
@@ -1406,6 +1410,10 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
 
     public function setOdbcTimeout($odbcTimeout)
     {
-        $this->odbcTimeout = $odbcTimeout;
+        $this->odbcTimeout = is_int($odbcTimeout) ? $odbcTimeout : self::DEFAULT_ODBC_TIMEOUT;
+    }
+
+    public function getOdbcTimeout() {
+        return $this->_getOdbcTimeout();
     }
 }
