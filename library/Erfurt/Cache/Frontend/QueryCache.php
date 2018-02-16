@@ -129,7 +129,11 @@ class Erfurt_Cache_Frontend_QueryCache
             $result = $this->getBackend()->load($queryId);
 
             if ($result) {
-                $result = unserialize($result);
+                try {
+                    $result = unserialize($result);
+                } catch (\ErrorException $e) {
+                    return self::ERFURT_CACHE_NO_HIT;
+                }
 
                 if (((boolean) Erfurt_App::getInstance()->getConfig()->cache->query->logging) == true) {
                     $this->getBackend()->incrementHitCounter($queryId);
