@@ -978,4 +978,33 @@ class Erfurt_Sparql_Query2_Regex extends Erfurt_Sparql_Query2_ElementHelper impl
 (gettype($this->element3)=='object'?(', '.$this->element3->getSparql()):'').')';
     }
 }
+
+/**
+ * represents a built-in lcase function call
+ * @package    Erfurt_Sparql_Query2
+ */
+class Erfurt_Sparql_Query2_lcase extends Erfurt_Sparql_Query2_ElementHelper implements Erfurt_Sparql_Query2_BuiltInCall
+{
+    protected $element1;
+
+    /**
+     *
+     * @param Erfurt_Sparql_Query2_Expression $element1
+     * @param Erfurt_Sparql_Query2_Expression $element2
+     */
+    public function __construct(Erfurt_Sparql_Query2_Expression $element1) {
+        $this->element1 = $element1;
+        parent::__construct();
+    }
+
+    /**
+     * get the string representation
+     * @return string
+     */
+    public function getSparql() {
+        return 'LCASE('.$this->element1->getSparql().')';
+    }
+}
+
+
 ?>
