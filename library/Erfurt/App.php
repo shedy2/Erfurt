@@ -1084,6 +1084,8 @@ class Erfurt_App
      */
     public function getVersioning()
     {
+        return false; // VERSIONING IS DISABLED
+
         if (null === $this->_versioning) {
             $config = $this->getConfig();
             $versioningEnabled = (boolean)$config->versioning;
