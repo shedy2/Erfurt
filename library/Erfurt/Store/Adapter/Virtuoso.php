@@ -1413,6 +1413,13 @@ class Erfurt_Store_Adapter_Virtuoso implements Erfurt_Store_Adapter_Interface, E
         $this->odbcTimeout = is_int($odbcTimeout) ? $odbcTimeout : self::DEFAULT_ODBC_TIMEOUT;
     }
 
+    public function setDefaultOdbcTimeout() {
+        /**
+         * При установке odbcTimeout в 0 _getOdbcTimeout Будет получать значение из конфига, либо по умолчанию
+         */
+        $this->odbcTimeout = 0;
+    }
+
     public function getOdbcTimeout() {
         return $this->_getOdbcTimeout();
     }
