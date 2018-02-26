@@ -10,16 +10,9 @@
             "homepage": "http://aksw.org"
         }
     ],
-    "repositories": [
-        {
-            "url": "https://github.com/shedy2/zf1.git",
-            "type": "vcs"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
         "a2e/arc2" : "dev-master",
-        "zendframework/zendframework1": "dev-dev-each",
         "easyrdf/easyrdf": "0.9.*"
     },
     "require-dev": {
