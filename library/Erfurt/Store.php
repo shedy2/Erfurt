@@ -897,12 +897,14 @@ EOF;
             $modelsUris[] = $graphUri;
         }
 
-        // get permissions
-        $modelsAc = $this->_checkAcBatch($modelsUris);
-        // filter for access control
-        foreach ($modelsAc as $graphUri => $modelAllowed) {
-            if (!$modelAllowed) {
-                unset($models[$graphUri]);
+        if (PHP_SAPI !== 'cli') {
+            // get permissions
+            $modelsAc = $this->_checkAcBatch($modelsUris);
+            // filter for access control
+            foreach ($modelsAc as $graphUri => $modelAllowed) {
+                if (!$modelAllowed) {
+                    unset($models[$graphUri]);
+                }
             }
         }
 
