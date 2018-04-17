@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2012, {@link http://aksw.org AKSW}
  * @license http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
-
+use Adposium\Security\SparqlSanitizer;
 
 
 
@@ -61,16 +61,16 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
      */
     public function getSparql() {
         if($this->isPrefixed()){
-            if($this->prefix != null){
-                return $this->prefix->getPrefixName().':'.$this->iri;
+            if ($this->prefix != null) {
+                return SparqlSanitizer::iri($this->prefix->getPrefixName().':'.$this->iri, true);
             } else {
-                return $this->unexpandablePrefix.':'.$this->iri;
+                return SparqlSanitizer::iri($this->unexpandablePrefix.':'.$this->iri, true);
             }
         } else {
-            if ($this->iri == 'bif:contains') {
+            if ($this->iri === 'bif:contains') {
                 return $this->iri;
             }
-            return '<'.$this->iri.'>';
+            return '<' . SparqlSanitizer::iri($this->iri, true).  '>';
         }
     }
 
