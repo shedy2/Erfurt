@@ -108,12 +108,12 @@ class Erfurt_Sparql_Query2_IriRef extends Erfurt_Sparql_Query2_ElementHelper imp
     public function getExpanded() {
         if($this->isPrefixed()){
             if($this->prefix != null){
-                return '<'.$this->prefix->getPrefixIri()->iri . $this->iri.'>';
+                return '<'.SparqlSanitizer::iri($this->prefix->getPrefixIri()->iri . $this->iri, true).'>';
             } else {
-                return $this->unexpandablePrefix.':'.$this->iri;
+                return SparqlSanitizer::iri($this->unexpandablePrefix.':'.$this->iri, true);
             }
         } else {
-            return '<'.$this->iri.'>';
+            return '<'.SparqlSanitizer::iri($this->iri, true).'>';
         }
     }
 }

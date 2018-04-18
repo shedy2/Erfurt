@@ -68,13 +68,13 @@ class Erfurt_Sparql_Query2_RDFLiteral extends Erfurt_Sparql_Query2_ElementHelper
      * @return string
      */
     public function getSparql() {
-        $sparql = $this->delimiter . $this->value . strrev($this->delimiter);
+        $sparql = $this->delimiter . addslashes($this->value) . strrev($this->delimiter);
         
         switch($this->mode) {
             case 0:
             break;
             case 1:
-            $sparql .= '@'.$this->lang;
+            $sparql .= '@'.SparqlSanitizer::iri($this->lang, true);
             break;
             case 2:
             $sparql .= '^^'.$this->datatype->getSparql();
