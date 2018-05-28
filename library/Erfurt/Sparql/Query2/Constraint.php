@@ -204,6 +204,16 @@ abstract class Erfurt_Sparql_Query2_RelHelper extends Erfurt_Sparql_Query2_Eleme
         return $this; //for chaining
     }
 
+    public function getElement1()
+    {
+        return $this->element1;
+    }
+
+    public function getElement2()
+    {
+        return $this->element2;
+    }
+
     /**
      * get string representation
      * @return string
