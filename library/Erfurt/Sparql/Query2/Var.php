@@ -138,8 +138,7 @@ class Erfurt_Sparql_Query2_Var extends Erfurt_Sparql_Query2_ElementHelper implem
         
         return $clean;
     }
-    
-    
+
     public function __toString() {
         return $this->getSparql();
     }

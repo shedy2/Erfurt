@@ -100,4 +100,37 @@ abstract class Erfurt_Sparql_Query2_ElementHelper {
     {
         return $this->getSparql();
     }
+
+    protected static function toArray_elementValue($value)
+    {
+        if ($value instanceof Erfurt_Sparql_Query2_ElementHelper) {
+            return $value->toArray();
+        }
+
+        if (is_array($value)) {
+            return array_map(array(static::class, 'toArray_elementValue'), $value);
+        }
+
+        return $value;
+    }
+
+    public function toArray()
+    {
+        $reflect = new ReflectionClass($this);
+        $props   = $reflect->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
+        $res = [
+            '__class' => static::class,
+            '__class_short' => substr(static::class, max(strrpos(static::class, '_'), strrpos(static::class, '\\')) + 1)
+        ];
+
+        foreach ($props as $prop) {
+            // Пропускаем статику и id, т.к. они генерируемые
+            if (!$prop->isStatic() && $prop->getName() != 'id') {
+                $value = $this->{$prop->getName()};
+                $res[$prop->getName()] = static::toArray_elementValue($value);
+            }
+        }
+
+        return $res;
+    }
 }
