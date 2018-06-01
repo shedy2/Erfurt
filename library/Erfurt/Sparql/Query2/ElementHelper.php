@@ -18,6 +18,8 @@
  */
 abstract class Erfurt_Sparql_Query2_ElementHelper {
     protected $id;
+    protected $element1;
+    protected $element2;
 
     public function __construct() {
         $this->id = Erfurt_Sparql_Query2::getNextID();
@@ -34,6 +36,16 @@ abstract class Erfurt_Sparql_Query2_ElementHelper {
      */
     public function addParent(Erfurt_Sparql_Query2_ContainerHelper $parent) {
         return $this;
+    }
+
+    public function getElement1()
+    {
+        return $this->element1;
+    }
+
+    public function getElement2()
+    {
+        return $this->element2;
     }
 
     /**
