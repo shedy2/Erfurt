@@ -945,7 +945,12 @@ class Erfurt_App
      */
     public function isCacheStoreEnabled()
     {
+        if ($this->_cacheStoreEnabled === false) {
+            return false;
+        }
+
         if (null === $this->_cacheStore) {
+            // Если принудительно не установили, вклюено ли, то берем из конфига
             if (is_null($this->_cacheStoreEnabled)) {
                 $config = $this->getConfig();
 
@@ -966,7 +971,8 @@ class Erfurt_App
      * Set cache store enabled flag.
      * Default value from config will be used if NULL.
      *
-     * @param bool|null $cacheStoreEnabled
+     *
+     * @param bool|null $cacheStoreEnabled если null, тогда берем из конфига, включен ли cache_store
      */
     public function setCacheStoreEnabled($cacheStoreEnabled = null)
     {

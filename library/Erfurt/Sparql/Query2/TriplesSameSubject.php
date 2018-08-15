@@ -93,7 +93,6 @@ class Erfurt_Sparql_Query2_TriplesSameSubject extends Erfurt_Sparql_Query2_Eleme
         $this->subject = $subject;
     }
 
-
     public function getWeight($part = null){
         if($part == null){
             $i = 0;

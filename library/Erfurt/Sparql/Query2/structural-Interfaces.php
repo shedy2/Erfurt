@@ -73,7 +73,9 @@ interface Erfurt_Sparql_Query2_VarOrTerm extends Erfurt_Sparql_Query2_GraphNode 
  * @copyright  Copyright (c) 2012, {@link http://aksw.org AKSW}
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
-interface Erfurt_Sparql_Query2_Verb {}
+interface Erfurt_Sparql_Query2_Verb {
+    public function getIri();
+}
 
 /**
  * Erfurt Sparql Query2 -VarOrIriRef 

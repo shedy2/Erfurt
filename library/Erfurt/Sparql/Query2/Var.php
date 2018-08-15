@@ -139,6 +139,11 @@ class Erfurt_Sparql_Query2_Var extends Erfurt_Sparql_Query2_ElementHelper implem
         return $clean;
     }
 
+    public function getIri()
+    {
+        return $this->name;
+    }
+
     public function __toString() {
         return $this->getSparql();
     }
