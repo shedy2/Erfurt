@@ -141,8 +141,11 @@ class Erfurt_Sparql_Query2_TriplesSameSubject extends Erfurt_Sparql_Query2_Eleme
             case $c1 instanceof Erfurt_Sparql_Query2_GroupGraphPattern:
                 $c1weight = 2;
                 break;
+            case $c1 instanceof \Core\Query2\ManualSparql:
+                $c1weight = 9;
+                break;
             case $c1 instanceof Erfurt_Sparql_Query2_Filter:
-                $c1weight = 3;
+                $c1weight = 10;
                 break;
         }
         switch(true){
@@ -152,8 +155,11 @@ class Erfurt_Sparql_Query2_TriplesSameSubject extends Erfurt_Sparql_Query2_Eleme
             case $c2 instanceof Erfurt_Sparql_Query2_GroupGraphPattern:
                 $c2weight = 2;
                 break;
+            case $c2 instanceof \Core\Query2\ManualSparql:
+                $c2weight = 9;
+                break;
             case $c2 instanceof Erfurt_Sparql_Query2_Filter:
-                $c2weight = 3;
+                $c2weight = 10;
                 break;
         }
         if (!($c1 instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject && $c2 instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject)) {
