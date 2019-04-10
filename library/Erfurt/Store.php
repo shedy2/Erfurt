@@ -1567,10 +1567,10 @@ if ($options[Erfurt_Store::USE_AC] == false) {
         $logger->debug('AC: requested FROMs' . $this->toStr($froms));
 
         // 2. no froms in query -> froms = availableModels
-        if (empty($froms)) {
-            $logger->debug('AC: no requested FROM -> take all available: '.$this->toStr($available));
-            $froms = $available;
-        }
+//        if (empty($froms)) {
+//            $logger->debug('AC: no requested FROM -> take all available: '.$this->toStr($available));
+//            $froms = $available;
+//        }
 
         // 3. filter froms by availability and existence - if filtering deletes all -> give empty result back
         if ($options[Erfurt_Store::USE_AC] === true) {
@@ -1579,10 +1579,10 @@ if ($options[Erfurt_Store::USE_AC] == false) {
                 'AC: after filtering (read-rights and existence): ' . $this->toStr($froms)
             );
 
-            if (empty($froms)) {
-                $logger->debug('AC:  all disallowed - empty result');
-                $noBindings = true;
-            }
+//            if (empty($froms)) {
+//                $logger->debug('AC:  all disallowed - empty result');
+//                $noBindings = true;
+//            }
         }
 
         // 4. get import closure for every remaining from
