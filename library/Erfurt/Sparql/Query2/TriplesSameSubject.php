@@ -136,13 +136,13 @@ class Erfurt_Sparql_Query2_TriplesSameSubject extends Erfurt_Sparql_Query2_Eleme
 
         switch(true){
             case $c1 instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject:
-                $c1weight = 1;
-                break;
-            case $c1 instanceof Erfurt_Sparql_Query2_GroupGraphPattern:
                 $c1weight = 2;
                 break;
+            case $c1 instanceof Erfurt_Sparql_Query2_GroupGraphPattern:
+                $c1weight = 4;
+                break;
             case $c1 instanceof \Core\Query2\ManualSparql:
-                $c1weight = 9;
+                $c1weight = $c1->getWeight();
                 break;
             case $c1 instanceof Erfurt_Sparql_Query2_Filter:
                 $c1weight = 10;
@@ -150,18 +150,19 @@ class Erfurt_Sparql_Query2_TriplesSameSubject extends Erfurt_Sparql_Query2_Eleme
         }
         switch(true){
             case $c2 instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject:
-                $c2weight = 1;
-                break;
-            case $c2 instanceof Erfurt_Sparql_Query2_GroupGraphPattern:
                 $c2weight = 2;
                 break;
+            case $c2 instanceof Erfurt_Sparql_Query2_GroupGraphPattern:
+                $c2weight = 4;
+                break;
             case $c2 instanceof \Core\Query2\ManualSparql:
-                $c2weight = 9;
+                $c2weight = $c2->getWeight();
                 break;
             case $c2 instanceof Erfurt_Sparql_Query2_Filter:
                 $c2weight = 10;
                 break;
         }
+
         if (!($c1 instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject && $c2 instanceof Erfurt_Sparql_Query2_IF_TriplesSameSubject)) {
             return $c1weight - $c2weight;
         }
